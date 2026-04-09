@@ -1,0 +1,54 @@
+# Tests
+
+## Test 1 - App loads and shows authentication screen [sanity]
+Viewport: desktop
+Description: App loads without errors and displays the authentication screen for unauthenticated users.
+
+Steps:
+1. Navigate to the app
+2. Wait for page to fully load
+
+Expected: Authentication card is visible with "Wanderlust" heading, email/password fields, and Sign In / Create Account tabs.
+
+## Test 2 - Auth screen responsive on mobile
+Viewport: mobile
+Description: Authentication screen is usable on a mobile viewport.
+
+Steps:
+1. Navigate to the app on mobile
+2. Wait for page to fully load
+
+Expected: Authentication card is visible and properly contained within the mobile viewport. No horizontal scroll.
+
+## Test 3 - Sign-in tab and sign-up tab are switchable
+Viewport: desktop
+Description: The two auth tabs switch correctly without errors.
+
+Steps:
+1. Navigate to the app
+2. Wait for the auth screen to load
+3. Click the "Create Account" tab
+4. Click the "Sign In" tab
+
+Expected: The tab indicator moves to the active tab. The button text changes between "Sign In" and "Create Account".
+
+## Test 4 - Empty email/password shows validation
+Viewport: desktop
+Description: Submitting an empty form triggers a meaningful response.
+
+Steps:
+1. Navigate to the app
+2. Wait for auth screen
+3. Click the "Sign In" button without entering credentials
+
+Expected: The form does not crash. Browser or app prevents submission or shows an error.
+
+## Test 5 - Google sign-in button is present
+Viewport: desktop
+Description: The Continue with Google button is visible on the auth screen.
+
+Steps:
+1. Navigate to the app
+2. Wait for auth screen to load
+
+Expected: A "Continue with Google" button with the Google logo is visible below the email/password form.

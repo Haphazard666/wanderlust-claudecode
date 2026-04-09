@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth } from '@/firebase';
@@ -27,9 +28,16 @@ function parseFirebaseError(code: string): string {
     case 'auth/too-many-requests':
       return 'Too many attempts. Please try again later.';
     case 'auth/popup-closed-by-user':
+    case 'auth/cancelled-popup-request':
       return 'Sign-in popup was closed. Please try again.';
+    case 'auth/popup-blocked':
+      return 'Popup was blocked by your browser. Please allow popups for this site and try again.';
+    case 'auth/operation-not-allowed':
+      return 'Google sign-in is not enabled. Please contact support.';
+    case 'auth/unauthorized-domain':
+      return 'This domain is not authorised for Google sign-in. Please contact support.';
     default:
-      return 'Something went wrong. Please try again.';
+      return `Sign-in failed (${code || 'unknown'}). Please try again.`;
   }
 }
 
@@ -81,13 +89,26 @@ export default function AuthView({ onLogin }: AuthViewProps) {
   async function handleGoogle() {
     setError('');
     setGoogleLoading(true);
+    const provider = new GoogleAuthProvider();
     try {
-      const provider = new GoogleAuthProvider();
       const cred = await signInWithPopup(auth, provider);
       onLogin(buildUser(cred.user.uid, cred.user.email, cred.user.displayName, cred.user.photoURL));
     } catch (err: unknown) {
       const code = (err as { code?: string }).code ?? '';
-      setError(parseFirebaseError(code));
+      console.error('[Google SSO error]', code, err);
+      if (code === 'auth/popup-blocked' || code === 'auth/popup-closed-by-user') {
+        // Fall back to redirect-based sign-in
+        try {
+          await signInWithRedirect(auth, provider);
+          // Page will redirect — no further action needed here
+          return;
+        } catch (redirectErr: unknown) {
+          const redirectCode = (redirectErr as { code?: string }).code ?? '';
+          setError(parseFirebaseError(redirectCode));
+        }
+      } else {
+        setError(parseFirebaseError(code));
+      }
     } finally {
       setGoogleLoading(false);
     }

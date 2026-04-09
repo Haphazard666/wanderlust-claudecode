@@ -1,4 +1,4 @@
-import { User } from '../types';
+import type { User } from '../types';
 
 interface SidebarProps {
   user: User;
@@ -44,7 +44,7 @@ export default function Sidebar({ user, activeView, onNavigate, onLogout }: Side
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 flex flex-col gap-1 px-3">
+        <nav className="flex-1 flex flex-col gap-1 px-3 overflow-y-auto hide-scrollbar">
           {navItems.map(({ view, label, icon }) => {
             const isActive = activeView === view;
             return (

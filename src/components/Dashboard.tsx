@@ -1,4 +1,5 @@
-import { Trip, User } from '../types';
+import { motion } from 'framer-motion';
+import type { Trip, User } from '../types';
 
 interface DashboardProps {
   user: User;
@@ -43,7 +44,7 @@ function TripCard({ trip, onSelect, onDelete, onChangeImage }: TripCardProps) {
 
   return (
     <div
-      className="group relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer bg-white"
+      className="group relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-200 cursor-pointer bg-white"
       onClick={onSelect}
     >
       {/* Delete button */}
@@ -98,7 +99,12 @@ function TripCard({ trip, onSelect, onDelete, onChangeImage }: TripCardProps) {
 
 export default function Dashboard({ user, trips, onNewTrip, onSelectTrip, onDeleteTrip, onChangeImage }: DashboardProps) {
   return (
-    <div className="min-h-screen bg-[#fdfdfc] p-6 md:p-10">
+    <motion.div
+      className="min-h-screen bg-[#fdfdfc] p-6 md:p-10"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
         <div>
@@ -107,7 +113,7 @@ export default function Dashboard({ user, trips, onNewTrip, onSelectTrip, onDele
         </div>
         <button
           onClick={onNewTrip}
-          className="self-start sm:self-auto bg-amber-500 hover:bg-amber-400 text-white font-black px-6 py-3 rounded-[1.5rem] shadow-xl shadow-amber-100 transition-all whitespace-nowrap"
+          className="self-start sm:self-auto bg-amber-500 hover:bg-amber-400 text-white font-black px-6 py-3 rounded-[1.5rem] shadow-xl shadow-amber-100 transition-all active:scale-95 whitespace-nowrap"
         >
           + Start New AI Plan
         </button>
@@ -122,7 +128,7 @@ export default function Dashboard({ user, trips, onNewTrip, onSelectTrip, onDele
             <p className="text-slate-400 mb-8">You haven't planned any trips yet. Let AI build your perfect itinerary.</p>
             <button
               onClick={onNewTrip}
-              className="bg-amber-500 hover:bg-amber-400 text-white font-black px-8 py-3 rounded-[1.5rem] shadow-xl shadow-amber-100 transition-all"
+              className="bg-amber-500 hover:bg-amber-400 text-white font-black px-8 py-3 rounded-[1.5rem] shadow-xl shadow-amber-100 transition-all active:scale-95"
             >
               Create My First Trip
             </button>
@@ -142,6 +148,6 @@ export default function Dashboard({ user, trips, onNewTrip, onSelectTrip, onDele
           ))}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
