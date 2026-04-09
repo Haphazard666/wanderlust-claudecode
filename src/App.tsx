@@ -21,8 +21,6 @@ import AuthView from '@/components/AuthView';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/components/Dashboard';
 import TripDetail from '@/components/TripDetail';
-import DiscoverView from '@/components/DiscoverView';
-import CommunityView from '@/components/CommunityView';
 import ProfileView from '@/components/ProfileView';
 import CreateTripModal from '@/components/CreateTripModal';
 import ShareModal from '@/components/ShareModal';
@@ -108,7 +106,7 @@ const DEFAULT_DIALOG: DialogState = {
   message: '',
 };
 
-type AppView = 'dashboard' | 'discover' | 'community' | 'settings';
+type AppView = 'dashboard' | 'settings';
 
 // ---------------------------------------------------------------------------
 // App
@@ -374,13 +372,12 @@ function App() {
       )}
 
       <Sidebar
-        user={user}
         activeView={selectedTrip ? 'dashboard' : activeView}
         onNavigate={handleNavigate}
         onLogout={handleLogout}
       />
 
-      <main className="flex-1 md:ml-64 pb-20 md:pb-0 min-h-screen">
+      <main className="flex-1 md:ml-18 pb-20 md:pb-0 min-h-screen">
         <AnimatePresence mode="wait">
           {selectedTrip ? (
             <TripDetail
@@ -402,10 +399,6 @@ function App() {
               onDeleteTrip={handleDeleteTrip}
               onChangeImage={setImageTrip}
             />
-          ) : activeView === 'discover' ? (
-            <DiscoverView key="discover" onNavigate={handleNavigate} />
-          ) : activeView === 'community' ? (
-            <CommunityView key="community" onNavigate={handleNavigate} />
           ) : activeView === 'settings' ? (
             <ProfileView
               key="settings"

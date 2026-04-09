@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --spacing-18: 4.5rem; /* 72px — icon rail width */
+}
+
 .hide-scrollbar {
   scrollbar-width: none;
 }
